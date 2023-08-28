@@ -1,0 +1,60 @@
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+<div fxLayout="column" *ngIf="!loading">
+    <mat-card fxFlex="100" class="p-large m-small">
+        <mat-card-title fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button color="warn" [routerLink]="['/assets']">
+                <mat-icon>close</mat-icon>
+            </button>
+            <h2 class="no-margin">
+                {{asset?.name}} <{{asset?.id}}>
+            </h2>
+        </mat-card-title>
+    </mat-card>
+
+    <mat-card fxFlex="100" class="p-large m-small" *ngIf="results?.length === 0">
+        <mat-card-title fxLayout="row" fxLayoutAlign="center center">
+            <h3 class="no-margin">Empty Results</h3>
+        </mat-card-title>
+    </mat-card>
+
+    <mat-card fxFlex="25" fxFlex.lt-md="100" class="p-large m-small" *ngFor="let restriction of results">
+        <div fxLayout="row" fxLayout.lt-md="column" fxFlex>
+            <mat-icon color="warn" class="large-icon"
+                [matTooltip]="restriction.attributes['zone_restriction_' + language]">
+                warning
+            </mat-icon>
+            <div fxLayout="column" fxFlex>
+                <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
+                    <h3 class="no-margin">{{ restriction.attributes['zone_name_' + language] }}</h3>
+                    <h5 class="no-margin italic-style">{{ getRestrictionPeriod(restriction )}}</h5>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    {{ restriction.attributes['zone_message_' + language] }}
+                </mat-card-subtitle>
+            </div>
+        </div>
+        <div fxLayout="row" fxFlex fxLayoutAlign="end end">
+            <div fxLayout="column" fxFlex fxLayoutAlign="end end">
+                <h2 class="no-margin">{{ restriction.attributes['auth_contact'] }}</h2>
+                <h3 class="no-margin">{{ restriction.attributes['auth_name_' + language] }}</h3>
+                <mat-card-title fxLayout="row" fxLayoutAlign="end center">
+                    <a mat-icon-button aria-label="email" [matTooltip]="restriction.attributes['auth_email']"
+                        [href]="'mailto:' + restriction.attributes['auth_email']" target="_blank">
+                        <mat-icon>mail</mat-icon>
+                    </a>
+                    <a mat-icon-button color="primary" aria-label="call"
+                        [matTooltip]="restriction.attributes['auth_phone']"
+                        [href]="'tel:' + restriction.attributes['auth_email']" target="_blank">
+                        <mat-icon>call</mat-icon>
+                    </a>
+                    <a mat-icon-button color="accent" aria-label="website"
+                        [matTooltip]="restriction.attributes['auth_url_' + language]"
+                        [href]="restriction.attributes['auth_url_' + language]" target="_blank">
+                        <mat-icon>public</mat-icon>
+                    </a>
+                </mat-card-title>
+            </div>
+        </div>
+    </mat-card>
+</div>

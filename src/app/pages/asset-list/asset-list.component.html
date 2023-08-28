@@ -1,0 +1,49 @@
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+<div fxLayout="column">
+    <mat-card fxFlex="100" class="p-large m-small">
+        <mat-card-title fxLayout="row" fxLayoutAlign="start center">
+            <h2>Select Asset</h2>
+        </mat-card-title>
+
+        <mat-card-content fxLayout="column">
+            <div fxLayout="row">
+                <mat-form-field fxFlex class="m-small">
+                    <mat-label>Search</mat-label>
+                    <input matInput placeholder="Search" [(ngModel)]="searchFilter" (ngModelChange)="handleFilter()"
+                        autocomplete="off">
+                </mat-form-field>
+
+                <mat-form-field fxFlex class="m-small">
+                    <mat-label>Asset Type</mat-label>
+                    <mat-select [(ngModel)]="typeFilter" (ngModelChange)="handleFilter()" multiple>
+                        <mat-option *ngFor="let type of assetTypes" [value]="type">{{type}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <cdk-virtual-scroll-viewport #scroller itemSize="125" class="viewport" appAutoHeight>
+        <div fxLayout="column">
+            <mat-card fxFlex="100" class="p-large m-small" *cdkVirtualFor="let asset of assetList">
+                <div fxLayout="row">
+                    <div fxLayout="column" fxFlex>
+                        <mat-card-title>{{asset.name}} <{{asset.id}}></mat-card-title>
+                        <mat-card-subtitle>{{asset.type}}</mat-card-subtitle>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <button mat-stroked-button color="primary" class="m-small"
+                            (click)="handleSelect(asset, 'population')">
+                            Population Density
+                        </button>
+                        <button mat-stroked-button color="accent" class="m-small"
+                            (click)="handleSelect(asset, 'restrictions')">
+                            Drone Restrictions
+                        </button>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+    </cdk-virtual-scroll-viewport>
+</div>
